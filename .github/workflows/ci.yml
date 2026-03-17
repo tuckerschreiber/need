@@ -14,5 +14,6 @@ jobs:
         with:
           node-version: 20
       - run: npm install
+      - run: npm install @rollup/rollup-linux-x64-gnu
       - run: cd cli && npm run build
       - run: cd cli && npm test
