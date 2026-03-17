@@ -1,14 +1,23 @@
 {
   "name": "@agentneeds/need",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "description": "Discover the right CLI tool for any task using plain English",
   "type": "module",
   "license": "MIT",
-  "keywords": ["cli", "tools", "mcp", "ai", "discovery"],
+  "keywords": [
+    "cli",
+    "tools",
+    "mcp",
+    "ai",
+    "discovery"
+  ],
   "engines": {
     "node": ">=18"
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tuckerschreiber/need.git",
