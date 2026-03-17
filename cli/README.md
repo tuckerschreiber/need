@@ -4,6 +4,12 @@
 
 <p align="center">Tool discovery for AI agents.</p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@agentneeds/need"><img src="https://img.shields.io/npm/v/@agentneeds/need?color=c8e64a&label=npm" alt="npm version" /></a>
+  <a href="https://github.com/tuckerschreiber/need/blob/main/LICENSE"><img src="https://img.shields.io/github/license/tuckerschreiber/need?color=c8e64a" alt="license" /></a>
+  <a href="https://www.npmjs.com/package/@agentneeds/need"><img src="https://img.shields.io/npm/dm/@agentneeds/need?color=c8e64a&label=downloads" alt="downloads" /></a>
+</p>
+
 AI agents hallucinate package names. `need` gives them a verified index of 10,000+ CLI tools — and a closed feedback loop that gets smarter with every install.
 
 ## What happens
