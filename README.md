@@ -1,48 +1,94 @@
 # need
 
-> Discover the right CLI tool for any task — in plain English.
+> Find the right CLI tool in plain English.
 
-AI agents and developers constantly need CLI tools but don't know which ones exist. `need` solves this with semantic search across thousands of tools, an MCP server for AI agent integration, and community-driven quality signals.
-
-## Quick start
+AI agents hallucinate package names. Developers waste time Googling. `need` fixes both — semantic search across 6,000+ CLI tools, with an MCP server so AI agents can discover and install tools autonomously.
 
 ```bash
 npx @needtools/need "compress png images"
 ```
 
-## What it does
+```
+  1. pngquant         brew install pngquant       92% success
+  2. optipng          brew install optipng         87% success
+  3. imagemagick      brew install imagemagick     94% success
+```
 
-**For developers** — find and install tools without Googling:
+## Install
+
+```bash
+npm install -g @needtools/need
+```
+
+Or use directly with `npx @needtools/need`.
+
+## Usage
+
+### Search
+
+Describe what you need. Get ranked results with install commands and success rates.
 
 ```bash
 need convert pdf to png
-need install "compress video files"
-need report jq --success
+need find duplicate files
+need compress video without losing quality
 ```
 
-**For AI agents** — discover tools programmatically via MCP:
+### Install
+
+Search and install interactively:
 
 ```bash
-need setup    # configures Claude Code + Cursor
-need serve    # runs the MCP server
+need install "compress png images"
 ```
 
-After setup, your AI agent can search for, install, and report on CLI tools autonomously.
+### Report
+
+Tell us if a tool worked. Every signal improves results for everyone.
+
+```bash
+need report pngquant --success
+need report sometool --fail
+```
+
+### MCP for AI agents
+
+One command configures `need` as an MCP server for your AI tools:
+
+```bash
+need setup
+```
+
+```
+  ✓ Claude Code — configured
+  ✓ Cursor — configured
+```
+
+Now your AI agent can:
+1. **Search** for the right tool via `search_tools`
+2. **Install** it via `install_tool` (security allowlist — only safe package manager commands)
+3. **Report** whether it worked via `report_tool_usage`
+
+The entire loop happens without leaving your editor.
 
 ## How it works
 
-1. Describe what you need in plain English
-2. `need` searches a vector database of CLI tools using semantic similarity
-3. Results are ranked by relevance and community success signals
-4. Install directly, or let your AI agent handle it via MCP
+1. You describe what you need in plain English
+2. Your query is converted to an embedding and matched against a vector database of CLI tools
+3. Results are ranked by semantic similarity + community success signals
+4. Install directly, or let your AI agent handle it
+
+## Browse tools
+
+Explore all 6,000+ indexed tools at [agentneed.dev](https://agentneed.dev).
 
 ## Architecture
 
 | Package | Description |
 |---------|-------------|
 | [`cli/`](./cli) | The `need` CLI and MCP server ([npm](https://www.npmjs.com/package/@needtools/need)) |
-| [`api/`](./api) | Search API powered by Cloudflare Workers + pgvector |
-| [`site/`](./site) | Marketing site |
+| [`api/`](./api) | Search API — Cloudflare Workers + Neon Postgres + pgvector |
+| [`site/`](./site) | Marketing site and tool directory ([agentneed.dev](https://agentneed.dev)) |
 
 ## Contributing
 

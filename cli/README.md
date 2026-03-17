@@ -1,6 +1,8 @@
 # need
 
-Discover the right CLI tool for any task using plain English.
+> Discover the right CLI tool for any task using plain English.
+
+Semantic search across 6,000+ CLI tools. Works standalone or as an MCP server for AI coding agents.
 
 ## Install
 
@@ -8,11 +10,11 @@ Discover the right CLI tool for any task using plain English.
 npm install -g @needtools/need
 ```
 
-## Usage
+Or run directly: `npx @needtools/need "compress png images"`
 
-### Search for tools
+## Commands
 
-Describe what you want to do and `need` finds the right CLI tool:
+### Search
 
 ```bash
 need convert pdf to png
@@ -20,42 +22,58 @@ need compress video files
 need find duplicate files
 ```
 
-### Report tool success or failure
+### Install
 
-Help improve recommendations by reporting whether a tool worked:
-
-```bash
-need report jq --success
-need report jq --fail
-```
-
-### Interactive install
-
-Search for a tool and install it interactively:
+Search and install interactively:
 
 ```bash
 need install "compress png images"
 ```
 
-### MCP server
+### Report
 
-Run `need` as a Model Context Protocol server so AI agents can discover tools programmatically:
+Help improve results by reporting whether a tool worked:
 
 ```bash
-need serve
+need report jq --success
+need report sometool --fail
 ```
 
 ### MCP setup
 
-Automatically configure the MCP server for supported AI clients:
+Configure `need` as an MCP server for your AI tools:
 
 ```bash
 need setup
 ```
 
-This registers `need` as an MCP server with:
+Supports **Claude Code** and **Cursor**. After setup, your AI agent can discover, install, and report on tools autonomously.
 
-- **Claude Code** -- adds the server to Claude Code's MCP configuration
-- **Cursor** -- adds the server to Cursor's MCP configuration
+### MCP server
 
-After setup, your AI assistant can call `need` to discover CLI tools on your behalf.
+Run the MCP server directly (used by `need setup` under the hood):
+
+```bash
+need serve
+```
+
+Exposes three tools:
+- `search_tools` — semantic search across CLI tools
+- `install_tool` — install with a security allowlist (brew, apt, npm, pip, cargo only)
+- `report_tool_usage` — report success or failure to improve rankings
+
+## How it works
+
+Queries are converted to embeddings and matched against a vector database of CLI tools using pgvector. Results are ranked by semantic similarity combined with community success/failure signals.
+
+No API keys required. No accounts. Just install and search.
+
+## Links
+
+- [GitHub](https://github.com/tuckerschreiber/need)
+- [Website](https://agentneed.dev)
+- [npm](https://www.npmjs.com/package/@needtools/need)
+
+## License
+
+MIT
