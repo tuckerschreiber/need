@@ -2,7 +2,7 @@
   <img src="assets/logo.svg" alt="need" width="400" />
 </p>
 
-<p align="center">Tool discovery for AI agents.</p>
+<p align="center"><strong>Tool discovery for AI agents.</strong></p>
 
 <p align="center">
   <a href="https://github.com/tuckerschreiber/need/actions/workflows/ci.yml"><img src="https://github.com/tuckerschreiber/need/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
@@ -12,6 +12,10 @@
 </p>
 
 AI agents hallucinate package names. `need` gives them a verified index of 10,000+ CLI tools — and a closed feedback loop that gets smarter with every install.
+
+<p align="center">
+  <img src="assets/demo.gif" alt="need in action inside Claude Code" width="600" />
+</p>
 
 ## What happens
 
@@ -38,7 +42,7 @@ npm install -g @agentneeds/need
 
 That's it. MCP servers are automatically configured for **Claude Code**, **Cursor**, and **Claude Desktop** on install. Your AI agent can immediately discover and install CLI tools without you doing anything.
 
-Or run with npx: `npx @agentneeds/need "compress png images"`
+Or try it now without installing: `npx @agentneeds/need "compress png images"`
 
 ## How agents use it
 
@@ -66,7 +70,7 @@ Queries are embedded with OpenAI's text-embedding-3-small and matched against a 
 
 ## Browse tools
 
-Explore all 10,000+ indexed tools at [agentneed.dev](https://agentneed.dev).
+Explore all 10,000+ indexed tools at [agentneeds.dev](https://agentneeds.dev).
 
 ## Architecture
 
@@ -74,7 +78,7 @@ Explore all 10,000+ indexed tools at [agentneed.dev](https://agentneed.dev).
 |---------|-------------|
 | [`cli/`](./cli) | The `need` CLI and MCP server ([npm](https://www.npmjs.com/package/@agentneeds/need)) |
 | [`api/`](./api) | Search API — Cloudflare Workers + Neon Postgres + pgvector |
-| [`site/`](./site) | Marketing site and tool directory ([agentneed.dev](https://agentneed.dev)) |
+| [`site/`](./site) | Marketing site and tool directory ([agentneeds.dev](https://agentneeds.dev)) |
 
 ## Contributing
 
