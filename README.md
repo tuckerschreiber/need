@@ -4,7 +4,7 @@
 
 <p align="center">Find the right CLI tool in plain English.</p>
 
-AI agents hallucinate package names. Developers waste time Googling. `need` fixes both — semantic search across 6,000+ CLI tools, with an MCP server so AI agents can discover and install tools autonomously.
+AI agents hallucinate package names. Developers waste time Googling. `need` fixes both — semantic search across 10,000+ CLI tools, with an MCP server so AI agents can discover and install tools autonomously.
 
 ```bash
 npx @agentneeds/need "compress png images"
@@ -82,7 +82,7 @@ The entire loop happens without leaving your editor.
 
 ## Browse tools
 
-Explore all 6,000+ indexed tools at [agentneed.dev](https://agentneed.dev).
+Explore all 10,000+ indexed tools at [agentneed.dev](https://agentneed.dev).
 
 ## Architecture
 

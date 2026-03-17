@@ -5,13 +5,6 @@ export function formatResults(results: ToolResult[]): string {
     return '\n  No tools found for that query. Try different words.\n';
   }
 
-  // Single exact match — clean, simple output
-  if (results.length === 1) {
-    const tool = results[0];
-    const desc = tool.short_description || tool.description;
-    return `\n  ${tool.name} — ${desc}\n\n  $ ${tool.install_command}\n`;
-  }
-
   const lines = results.map((tool, i) => {
     const num = `  ${i + 1}.`;
     const name = tool.name;

@@ -1,6 +1,6 @@
 import type { ToolResult } from './types.js';
 
-const DEFAULT_API_URL = 'https://need-api.schreibertucbiz.workers.dev';
+const DEFAULT_API_URL = 'https://api.agentneed.dev';
 
 interface SearchResponse {
   results: ToolResult[];

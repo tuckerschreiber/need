@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { getEmbedding } from './lib/embeddings.js';
 import { createDb } from './lib/db.js';
+import { rateLimit } from './lib/rate-limit.js';
 
 type Bindings = {
   DATABASE_URL: string;
@@ -30,6 +31,10 @@ app.use('*', async (c, next) => {
     'max-age=63072000; includeSubDomains; preload'
   );
 });
+
+// Rate limits: /search hits OpenAI (costs money), so keep it tight
+app.use('/search', rateLimit({ max: 30, windowMs: 60_000 }));
+app.use('/signal', rateLimit({ max: 20, windowMs: 60_000 }));
 
 app.get('/', (c) => c.json({ name: 'need-api', version: '0.1.0' }));
 

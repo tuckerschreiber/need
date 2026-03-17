@@ -4,7 +4,7 @@
 
 <p align="center">Discover the right CLI tool for any task using plain English.</p>
 
-Semantic search across 6,000+ CLI tools. Works standalone or as an MCP server for AI coding agents.
+Semantic search across 10,000+ CLI tools. Works standalone or as an MCP server for AI coding agents.
 
 ## Install
 
