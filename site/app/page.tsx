@@ -3,8 +3,6 @@ import {
   GithubIcon,
   SearchIcon,
   ShieldCheckIcon,
-  SparklesIcon,
-  TerminalIcon,
   ZapIcon,
 } from "lucide-react";
 
@@ -51,16 +49,9 @@ export default function Home() {
         <DotPattern className="fade-bottom" />
         <div className="relative mx-auto max-w-[760px] flex flex-col pt-2 sm:pt-6">
           <div className="flex flex-col items-center gap-6 text-center">
-            <div className="animate-appear flex flex-wrap justify-center gap-2">
-              {["Open Source", "No API Keys", "MCP Native", "Works with Any Agent"].map((badge) => (
-                <span
-                  key={badge}
-                  className="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-medium"
-                >
-                  {badge}
-                </span>
-              ))}
-            </div>
+            <p className="animate-appear text-muted-foreground text-xs tracking-wide font-medium">
+              Open Source  ·  No API Keys  ·  MCP Native  ·  Any Agent
+            </p>
             <h1 className="animate-appear from-foreground to-foreground dark:to-muted-foreground relative z-10 inline-block bg-linear-to-r bg-clip-text text-4xl leading-tight font-semibold text-balance text-transparent sm:text-6xl sm:leading-tight">
               Find the right CLI tool in plain English
             </h1>
@@ -81,41 +72,17 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* The Problem */}
-      <Section>
-        <div className="mx-auto max-w-[760px] flex flex-col items-center gap-8 text-center">
-          <h2 className="text-2xl leading-tight font-semibold sm:text-4xl sm:leading-tight">
-            500,000+ packages on npm. Good luck finding the right one.
-          </h2>
-          <div className="grid gap-8 text-left sm:grid-cols-3">
-            <div className="flex flex-col gap-1.5">
-              <p className="text-foreground text-sm font-medium">Developers Google.</p>
-              <p className="text-muted-foreground text-sm">
-                Stack Overflow from 2019, Medium articles behind paywalls.
-              </p>
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <p className="text-foreground text-sm font-medium">AI agents hallucinate.</p>
-              <p className="text-muted-foreground text-sm">
-                LLMs invent packages that don&apos;t exist or suggest deprecated ones.
-              </p>
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <p className="text-foreground text-sm font-medium">Both waste time.</p>
-              <p className="text-muted-foreground text-sm">
-                Search engines match keywords, not intent.
-              </p>
-            </div>
-          </div>
-        </div>
-      </Section>
-
       {/* How It Works */}
       <Section>
         <div className="mx-auto max-w-[860px] flex flex-col items-center gap-10">
-          <h2 className="text-center text-2xl font-semibold sm:text-4xl">
-            How it works
-          </h2>
+          <div className="flex flex-col items-center gap-3 text-center">
+            <h2 className="text-2xl font-semibold sm:text-4xl">
+              How it works
+            </h2>
+            <p className="text-muted-foreground max-w-[540px] text-sm text-balance">
+              Search engines match keywords. LLMs hallucinate package names. <code className="font-mono">need</code> matches intent.
+            </p>
+          </div>
           <div className="grid w-full gap-10">
             {/* Step 1: Search */}
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-10">
@@ -191,50 +158,25 @@ export default function Home() {
                 <span className="text-brand">✓</span> Reported success for &quot;pngquant&quot;.
               </Terminal>
             </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* For AI Agents */}
-      <Section>
-        <div className="mx-auto max-w-[860px] flex flex-col items-center gap-10">
-          <div className="flex flex-col items-center gap-3 text-center">
-            <h2 className="text-2xl font-semibold sm:text-4xl">
-              Built for AI agents
-            </h2>
-            <p className="text-muted-foreground max-w-[500px] text-sm text-balance">
-              One command configures <code className="font-mono">need</code> as an MCP server. The entire loop happens without leaving your editor.
-            </p>
-          </div>
-          <div className="w-full max-w-[540px] flex flex-col items-center gap-6">
-            <Terminal title="~ setup" className="w-full">
-              <span className="text-muted-foreground">$</span>{" "}
-              <span className="text-foreground">need setup</span>
-              {"\n"}
-              {"  "}
-              <span className="text-brand">✓</span> Claude Code — configured
-              {"\n"}
-              {"  "}
-              <span className="text-brand">✓</span> Cursor — configured
-            </Terminal>
-            <div className="flex w-full flex-col gap-3 sm:flex-row sm:justify-center sm:gap-8">
-              {[
-                { step: "Search", desc: "via search_tools" },
-                { step: "Install", desc: "via install_tool" },
-                { step: "Report", desc: "via report_tool_usage" },
-              ].map(({ step, desc }, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <span className="text-brand font-mono text-sm font-semibold">{i + 1}.</span>
-                  <p className="text-sm">
-                    <span className="text-foreground font-medium">{step}</span>{" "}
-                    <span className="text-muted-foreground">{desc}</span>
-                  </p>
-                </div>
-              ))}
+            {/* Step 4: Connect */}
+            <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-10">
+              <div className="flex flex-col gap-1.5 md:w-1/3 md:pt-3">
+                <span className="text-brand text-sm font-semibold">4. Connect</span>
+                <p className="text-muted-foreground text-sm">
+                  One command adds <code className="font-mono">need</code> as an MCP server for your AI agent.
+                </p>
+              </div>
+              <Terminal title="~" className="flex-1">
+                <span className="text-muted-foreground">$</span>{" "}
+                <span className="text-foreground">need setup</span>
+                {"\n"}
+                {"  "}
+                <span className="text-brand">✓</span> Claude Code — configured
+                {"\n"}
+                {"  "}
+                <span className="text-brand">✓</span> Cursor — configured
+              </Terminal>
             </div>
-            <p className="text-muted-foreground text-sm">
-              Supports Claude Code and Cursor — more coming.
-            </p>
           </div>
         </div>
       </Section>
@@ -247,11 +189,6 @@ export default function Home() {
             title: "Semantic search",
             description: "Describe what you need in plain English. No exact package names required.",
             icon: <SearchIcon className="size-5 stroke-1" />,
-          },
-          {
-            title: "Community signals",
-            description: "Results ranked by what actually works, not just text similarity.",
-            icon: <SparklesIcon className="size-5 stroke-1" />,
           },
           {
             title: "MCP native",
@@ -267,11 +204,6 @@ export default function Home() {
             title: "Zero config",
             description: "No API keys, no accounts, no setup. Just npx and go.",
             icon: <ZapIcon className="size-5 stroke-1" />,
-          },
-          {
-            title: "Open source",
-            description: "MIT licensed. Run it, fork it, improve it.",
-            icon: <TerminalIcon className="size-5 stroke-1" />,
           },
         ]}
       />
@@ -335,17 +267,12 @@ export default function Home() {
       <Section>
         <div className="mx-auto max-w-[520px] flex flex-col items-center gap-5 text-center">
           <h2 className="text-2xl font-semibold sm:text-4xl">
-            Try it in 10 seconds
+            Try it now
           </h2>
-          <Terminal title="~" className="w-full">
-            npx @needtools/need &quot;convert pdf to png&quot;
-          </Terminal>
+          <InstallCommand command={`npx @needtools/need "convert pdf to png"`} />
           <p className="text-muted-foreground text-sm">
-            Then add it to your AI agent:
+            Then run <code className="font-mono">need setup</code> to connect your AI agent.
           </p>
-          <Terminal title="~" className="w-full">
-            npx @needtools/need setup
-          </Terminal>
           <div className="mt-2 flex items-center gap-6">
             <a href="https://github.com/tuckerschreiber/need" className="text-muted-foreground hover:text-foreground text-sm transition-colors">
               GitHub
