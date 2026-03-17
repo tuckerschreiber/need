@@ -3,21 +3,35 @@
   "version": "0.1.0",
   "description": "Discover the right CLI tool for any task using plain English",
   "type": "module",
+  "license": "MIT",
+  "keywords": ["cli", "tools", "mcp", "ai", "discovery"],
+  "engines": {
+    "node": ">=18"
+  },
+  "files": ["dist", "README.md"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tuckerschreiber/need.git",
+    "directory": "cli"
+  },
   "bin": {
     "need": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' tsc",
     "dev": "tsc --watch",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "commander": "^13.0.0"
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "commander": "^13.0.0",
+    "zod": "^3.25 || ^4.0"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "typescript": "^5.7.0",
-    "vitest": "^3.0.0",
-    "@types/node": "^22.0.0"
+    "vitest": "^3.0.0"
   }
 }

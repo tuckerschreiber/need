@@ -1,5 +1,5 @@
 {
   "name": "need-monorepo",
   "private": true,
-  "workspaces": ["cli", "api"]
+  "workspaces": ["cli", "api", "site"]
 }

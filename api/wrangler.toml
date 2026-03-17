@@ -1,6 +1,4 @@
 name = "need-api"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
-
-[vars]
-ENVIRONMENT = "production"
+compatibility_flags = ["nodejs_compat"]

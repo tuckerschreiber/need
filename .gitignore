@@ -3,3 +3,6 @@ dist/
 .wrangler/
 .env
 .dev.vars
+.claude/
+docs/plans/
+supabase/
