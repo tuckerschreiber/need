@@ -17,6 +17,8 @@ AI agents hallucinate package names. `need` gives them a verified index of 10,00
   <img src="assets/demo.gif" alt="need in action inside Claude Code" width="640" />
 </p>
 
+[![need MCP server](https://glama.ai/mcp/servers/tuckerschreiber/need/badges/card.svg)](https://glama.ai/mcp/servers/tuckerschreiber/need)
+
 ## What happens
 
 You ask Claude to "compress these PNGs". Claude doesn't have `pngquant` installed and doesn't know what the best tool is. But `need` is running as an MCP server in the background, so Claude automatically:
