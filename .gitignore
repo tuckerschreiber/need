@@ -5,5 +5,5 @@ dist/
 .env
 .dev.vars
 .claude/
-docs/plans/
+docs/
 supabase/
