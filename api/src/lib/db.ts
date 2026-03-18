@@ -55,11 +55,18 @@ export function createDb(databaseUrl: string) {
       `;
     },
 
-    async insertSignal(toolId: number, success: boolean, queryText?: string, agentType?: string, commandRan?: string, context?: string): Promise<void> {
-      await sql`
-        INSERT INTO signals (tool_id, query_text, success, agent_type, command_ran, context)
-        VALUES (${toolId}, ${queryText ?? null}, ${success}, ${agentType ?? null}, ${commandRan ?? null}, ${context ?? null})
-      `;
+    async insertSignal(toolId: number, success: boolean, queryText?: string, agentType?: string, commandRan?: string, context?: string, queryEmbedding?: number[]): Promise<void> {
+      if (queryEmbedding) {
+        await sql`
+          INSERT INTO signals (tool_id, query_text, success, agent_type, command_ran, context, query_embedding)
+          VALUES (${toolId}, ${queryText ?? null}, ${success}, ${agentType ?? null}, ${commandRan ?? null}, ${context ?? null}, ${JSON.stringify(queryEmbedding)}::vector(1536))
+        `;
+      } else {
+        await sql`
+          INSERT INTO signals (tool_id, query_text, success, agent_type, command_ran, context)
+          VALUES (${toolId}, ${queryText ?? null}, ${success}, ${agentType ?? null}, ${commandRan ?? null}, ${context ?? null})
+        `;
+      }
     },
 
     async getToolByName(name: string): Promise<SearchResult | null> {

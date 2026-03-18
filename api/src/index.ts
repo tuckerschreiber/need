@@ -153,6 +153,19 @@ app.post('/signal', async (c) => {
 
   try {
     const db = createDb(c.env.DATABASE_URL);
+
+    // Generate query embedding if query_text provided (enables proven_score ranking)
+    let queryEmbedding: number[] | undefined;
+    if (body.query_text) {
+      try {
+        queryEmbedding = await getEmbedding(body.query_text.slice(0, 500), {
+          apiKey: c.env.OPENAI_API_KEY,
+        });
+      } catch {
+        // Embedding failure is non-fatal — signal still recorded without embedding
+      }
+    }
+
     await db.insertSignal(
       body.tool_id,
       body.success,
@@ -160,6 +173,7 @@ app.post('/signal', async (c) => {
       body.agent_type?.slice(0, 50),
       body.command_ran?.slice(0, 500),
       body.context?.slice(0, 1000),
+      queryEmbedding,
     );
     return c.json({ ok: true });
   } catch (err) {
