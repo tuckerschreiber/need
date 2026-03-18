@@ -6,6 +6,8 @@ dist/
 .dev.vars
 .claude/
 docs/
+!docs/search-quality/
+!docs/search-quality/**
 site/
 supabase/
 .worktrees/

@@ -2,6 +2,7 @@ import { neon } from '@neondatabase/serverless';
 
 const DATABASE_URL = process.env.DATABASE_URL!;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY!;
+const FORCE = process.argv.includes('--force');
 
 const sql = neon(DATABASE_URL);
 
@@ -27,15 +28,29 @@ async function enrichTool(tool: Tool): Promise<EnrichmentResult> {
     },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 512,
+      max_tokens: 600,
       messages: [
         {
           role: 'user',
           content: `You are a CLI tool expert. For the Homebrew package "${tool.name}" (${tool.description}), provide:
 
-1. A short_description: A clear one-sentence description of what this tool does (max 80 chars)
-2. binaries: The actual command-line binary names this package installs (not the package name, but the commands you run). If unsure, use the package name.
-3. usage_examples: 2-3 practical usage examples showing common tasks
+1. short_description: One sentence, max 80 chars. What it does, plainly.
+2. binaries: The actual command names this package installs (not the package name).
+3. usage_examples: 4-5 examples. CRITICAL RULE: each "description" field must be phrased exactly like a search query someone would type to find this tool — plain English task phrases, not technical jargon.
+
+GOOD descriptions (search-query style):
+- "compress video without losing quality"
+- "pretty print JSON in terminal"
+- "find files by name recursively"
+- "download YouTube video"
+- "search for text inside files"
+
+BAD descriptions (jargon/man-page style):
+- "Encode with libx264 codec at CRF 23"
+- "Traverse directory tree with regex filter"
+- "Fetch remote resource via HTTP GET"
+
+Cover the most common use cases a developer would search for.
 
 Respond with ONLY valid JSON, no markdown:
 {"short_description": "...", "binaries": ["..."], "usage_examples": [{"description": "...", "command": "..."}]}`,
@@ -54,20 +69,16 @@ Respond with ONLY valid JSON, no markdown:
   };
 
   let text = data.content[0].text.trim();
-  // Strip markdown code fences if present
   text = text.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
   return JSON.parse(text) as EnrichmentResult;
 }
 
 async function enrich() {
-  // Get tools that haven't been enriched yet
-  const tools = await sql`
-    SELECT id, name, description FROM public.tools
-    WHERE usage_examples = '[]'::jsonb OR usage_examples IS NULL
-    ORDER BY id
-  ` as Tool[];
+  const tools = FORCE
+    ? await sql`SELECT id, name, description FROM public.tools ORDER BY id` as Tool[]
+    : await sql`SELECT id, name, description FROM public.tools WHERE usage_examples = '[]'::jsonb OR usage_examples IS NULL ORDER BY id` as Tool[];
 
-  console.log(`Found ${tools.length} tools to enrich`);
+  console.log(`Found ${tools.length} tools to enrich${FORCE ? ' (--force mode)' : ''}`);
 
   const BATCH_SIZE = 20;
   let enriched = 0;
@@ -102,8 +113,6 @@ async function enrich() {
     }
 
     console.log(`Progress: ${enriched + failed}/${tools.length} (${enriched} ok, ${failed} failed)`);
-
-    // Rate limit pause
     await new Promise((r) => setTimeout(r, 1000));
   }
 
