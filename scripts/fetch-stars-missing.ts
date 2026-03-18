@@ -35,14 +35,14 @@ async function fetchStars(owner: string, repo: string): Promise<number | null> {
 }
 
 async function main() {
-  // Only fetch tools that don't have stars yet — avoids wasting rate limit re-fetching existing data
+  // Only fetch tools with github_stars = 0 that have a source_url
   const tools = await sql`
     SELECT id, name, source_url FROM public.tools
     WHERE github_stars = 0 AND source_url LIKE '%github.com%'
     ORDER BY id
   ` as Array<{ id: number; name: string; source_url: string | null }>;
 
-  console.log(`Processing ${tools.length} tools...`);
+  console.log(`Processing ${tools.length} tools with missing stars...`);
 
   let updated = 0;
   let skipped = 0;
@@ -50,17 +50,11 @@ async function main() {
 
   for (const tool of tools) {
     const repo = extractGithubRepo(tool.source_url);
-    if (!repo) {
-      skipped++;
-      continue;
-    }
+    if (!repo) { skipped++; continue; }
 
     try {
       const stars = await fetchStars(repo.owner, repo.repo);
-      if (stars === null) {
-        skipped++;
-        continue;
-      }
+      if (stars === null) { skipped++; continue; }
 
       await sql`UPDATE public.tools SET github_stars = ${stars} WHERE id = ${tool.id}`;
       updated++;
@@ -72,7 +66,7 @@ async function main() {
       console.error(`  x ${tool.name}: ${err}`);
       failed++;
       if (String(err).includes('403') || String(err).includes('429')) {
-        console.error('Rate limit hit — wait 60s and re-run');
+        console.error('Rate limit hit — re-run to continue (already-updated tools will be skipped)');
         break;
       }
     }
@@ -80,16 +74,12 @@ async function main() {
     await new Promise(r => setTimeout(r, 100));
   }
 
-  console.log(`\nDone: ${updated} updated, ${skipped} skipped (no GitHub URL), ${failed} failed`);
+  console.log(`\nDone: ${updated} updated, ${skipped} skipped, ${failed} failed`);
 
-  const top = await sql`
-    SELECT name, github_stars FROM public.tools
-    WHERE github_stars > 0
-    ORDER BY github_stars DESC
-    LIMIT 10
-  `;
-  console.log('\nTop 10 by stars:');
-  top.forEach((r: any) => console.log(`  ${r.name}: ${r.github_stars.toLocaleString()}`));
+  const [{ with_stars, total }] = await sql`
+    SELECT COUNT(*) FILTER (WHERE github_stars > 0) AS with_stars, COUNT(*) AS total FROM tools
+  ` as any[];
+  console.log(`Coverage: ${with_stars}/${total} tools have stars (${Math.round(Number(with_stars)*100/Number(total))}%)`);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
