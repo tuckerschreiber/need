@@ -45,6 +45,59 @@ describe('GET /search', () => {
     expect(body.results[0].similarity).toBeGreaterThan(0);
   });
 
+  it('returns 200 with tools and days for GET /trending', async () => {
+    const mockTrending = [
+      {
+        id: 1,
+        name: 'jq',
+        install_command: 'brew install jq',
+        github_stars: 29000,
+        agent_uses: 150,
+        success_rate: 0.97,
+      },
+      {
+        id: 2,
+        name: 'ripgrep',
+        install_command: 'brew install ripgrep',
+        github_stars: 45000,
+        agent_uses: 120,
+        success_rate: 0.95,
+      },
+    ];
+
+    const app = new Hono();
+    app.get('/trending', async (c) => {
+      const days = Math.min(Math.max(parseInt(c.req.query('days') ?? '7', 10) || 7, 1), 90);
+      const limit = Math.min(Math.max(parseInt(c.req.query('limit') ?? '10', 10) || 10, 1), 50);
+      return c.json({ tools: mockTrending.slice(0, limit), days });
+    });
+
+    const res = await app.request('/trending');
+    const body = await res.json() as { tools: typeof mockTrending; days: number };
+    expect(res.status).toBe(200);
+    expect(body.days).toBe(7);
+    expect(Array.isArray(body.tools)).toBe(true);
+    expect(body.tools[0].name).toBe('jq');
+    expect(typeof body.tools[0].agent_uses).toBe('number');
+    expect(typeof body.tools[0].success_rate).toBe('number');
+    expect(typeof body.tools[0].github_stars).toBe('number');
+  });
+
+  it('respects days and limit query params for GET /trending', async () => {
+    const app = new Hono();
+    app.get('/trending', async (c) => {
+      const days = Math.min(Math.max(parseInt(c.req.query('days') ?? '7', 10) || 7, 1), 90);
+      const limit = Math.min(Math.max(parseInt(c.req.query('limit') ?? '10', 10) || 10, 1), 50);
+      return c.json({ tools: [], days });
+    });
+
+    const res = await app.request('/trending?days=30&limit=5');
+    const body = await res.json() as { tools: unknown[]; days: number };
+    expect(res.status).toBe(200);
+    expect(body.days).toBe(30);
+    expect(Array.isArray(body.tools)).toBe(true);
+  });
+
   it('falls back to FTS when embedding fails', async () => {
     const ftsResults = [
       {

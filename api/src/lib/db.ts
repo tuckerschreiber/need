@@ -172,5 +172,19 @@ export function createDb(databaseUrl: string) {
       `;
       return results as Array<{ category: string; count: number }>;
     },
+
+    async getTrendingTools(days: number = 7, limit: number = 10): Promise<Array<{
+      id: number;
+      name: string;
+      install_command: string;
+      github_stars: number;
+      agent_uses: number;
+      success_rate: number;
+    }>> {
+      const results = await sql`
+        SELECT * FROM trending_tools(${days}, ${limit})
+      `;
+      return results as any[];
+    },
   };
 }

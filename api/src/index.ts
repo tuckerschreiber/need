@@ -203,6 +203,19 @@ app.get('/categories', async (c) => {
   }
 });
 
+app.get('/trending', async (c) => {
+  const days = Math.min(Math.max(parseInt(c.req.query('days') ?? '7', 10) || 7, 1), 90);
+  const limit = Math.min(Math.max(parseInt(c.req.query('limit') ?? '10', 10) || 10, 1), 50);
+
+  try {
+    const db = createDb(c.env.DATABASE_URL);
+    const tools = await db.getTrendingTools(days, limit);
+    return c.json({ tools, days });
+  } catch (err) {
+    return c.json({ error: safeErrorMessage(err) }, 500);
+  }
+});
+
 app.get('/tools', async (c) => {
   const category = c.req.query('category')?.slice(0, 100);
   const limit = Math.min(Math.max(parseInt(c.req.query('limit') ?? '50', 10) || 50, 1), 100);
