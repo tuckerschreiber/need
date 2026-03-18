@@ -1,6 +1,6 @@
 {
   "name": "@agentneeds/need",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Discover the right CLI tool for any task using plain English",
   "type": "module",
   "license": "MIT",
